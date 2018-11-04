@@ -1,0 +1,120 @@
+官网：https://ustbhuangyi.github.io/better-scroll/doc/zh-hans/#better-scroll%20%E6%98%AF%E4%BB%80%E4%B9%88
+
+
+1、下载better-scroll  cnpm install better-scroll --save-dev
+
+2、引入better-scroll  import BScroll from "better-scroll";
+
+3、在需要滚动的盒子上加class content 父级盒子加wrapper
+    当前父级盒子（wrapper） 必须要有高度和<overflow:hidden>
+    
+    
+    
+4、创建scroll 实例化这个东西 (注意在能获取到DOM结构的生命周期中获取,mounted中)
+    this.scroll = new BScroll(需要滚动的DOM容器，可使用ref获取,{
+            click : true
+    });
+    一般情况下，滚动的数据都是异步获取的是没有办法直接滚动的,需要重新计算一下高度
+5、当数据发生改变得时候调用this.scroll.refresh方法进行高度的重新获取
+(要监控dom结构发生改变，在发生变化的时候 所以在updated中)
+
+
+6、上拉刷新更新数据
+    this.scroll.on("scrollEnd",()=>{
+        //更新数据
+    })
+click:添加单击事件
+类型：Boolean
+默认值：false
+作用：better-scroll 默认会阻止浏览器的原生 click 事件。当设置为 true，
+better-scroll 会派发一个 click 事件，
+
+dblclick(v1.12.0+)：添加双击事件
+类型：Boolean | Object
+默认值：false
+作用：派发双击点击事件。当配置成 true 的时候，默认 2 次点击的延时为 300 ms，如果配置成对象可以修改 delay。
+dblclick: {
+  delay: 300
+}
+
+项目中的一些问题：
+1.下拉显示更多的时候 将原有对象和现有对象结合起来  
+ // 下拉更多的电影
+    nowPlayMore(state,data){
+        // 把原有的数据相结合  合并对象
+        state.moreMovie = [...state.moreMovie,...data]
+    }
+
+
+
+gulb 前端自动化
+webpack:把浏览器不识别的js啥的打包，实现热更新，gulb能实现的webpack都能实现 
+
+
+如何配置webpack ：
+安装：cnpm install webpack@3.5.3 -g
+
+初始化：npm init -y
+局部安装 cnpm install webpack@3.5.3 --save-dev
+安装 js loader 
+安装 css loader
+局部安装 webpack-dev-server cnpm install 
+局部安装 html-webpack-plugin   npm install html-webpack-plugin
+配置：module(
+    rules:[
+        {
+            test:/\.(js|jsx)/
+            use:{
+                loader:"babel-loader",
+                options:{
+                    presets:["@babel/env","@babel/react"]
+                }
+            }
+        },
+        {
+            exclude:__dirname+"src"
+        },
+        
+        {
+            test:/\.(css|scss)/
+            loader:["style-loader","css-loader","scss-loader"]
+        },
+        先引入
+        plugins:[
+            new HtmlWebpackPlugin({
+                template:"index.html",
+                filename:"index.html"
+            })
+        ]
+    ]
+)
+排除node-moudle中的文件 : exclude
+安装一个这个就可以
+npm install webpack-dev-server@2 -g
+packjson中的script : test -> dev  webpack-dev-server --open 启动好之后自动打开
+配置完之后就可以打开页面了  npm run dev
+
+
+安装 react react-dom  cnpm install react react-dom --save-dev
+在index.html中创建一个根元素 id为app 
+在入口文件中引入react react-dom 
+import React from "react";
+
+react-dom用来渲染和操作虚拟dom
+import ReactDom from "react-dom"
+基本上手 
+let h1 = <h2>你别走了</h2>
+
+
+渲染虚拟dom  有三个参数
+1.需要渲染的DOM元素
+2. 将渲染好的DOM元素 挂载在哪个节点中
+3.渲染成功之后的回调函数
+
+ReactDom.render(
+    h1,document.querySlector("#app)
+)
+
+打包：webpack  4.0以下的版本
+
+
